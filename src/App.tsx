@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useMemo, useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
+import $ from 'jquery'; 
 
 function App() {
   const [count, setCount] = useState(0);
@@ -24,6 +25,24 @@ roles: (3) ['Carry', 'Escape', 'Nuker']
   //   });
   // }, []);
 
+  //TODO: Look at this https://stackoverflow.com/questions/45677164/reactjs-json-file-is-fetched-from-localhost-instead-of-project-directory
+
+  const imageRenderer = useMemo(() => {
+    return $.ajax({
+      url: 'src/assets/images/vertical/',
+      success: function (data) {
+        console.log('data', data);
+        $(data).each(function () {
+          const filename = this;
+          console.log('filename', filename);
+          $('body').append(
+            "<img src='" + 'src/assets/images/vertical/' + filename + "'>"
+          );
+        });
+      },
+    });
+  }, []);
+
   return (
     <>
       <div>
@@ -39,6 +58,7 @@ roles: (3) ['Carry', 'Escape', 'Nuker']
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
+        <div>{imageRenderer}</div>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -50,4 +70,4 @@ roles: (3) ['Carry', 'Escape', 'Nuker']
   );
 }
 
-export default App
+export default App;
